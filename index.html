@@ -42,11 +42,11 @@
         <section class="introducao">
             <p class="sobrelinha">Compras parceladas</p>
 
-            <h1>Acompanhe suas compras parceladas.</h1>
+            <h1>Acompanhar compras parceladas</h1>
 
             <p class="introducao-texto">
-                Cadastre suas compras, consulte os próximos vencimentos
-                e registre os pagamentos.
+                Consultar compras, consultar os próximos vencimentos
+                e registrar pagamentos.
             </p>
         </section>
 
@@ -88,8 +88,7 @@
 
                     <div class="campo">
                         <label for="data-compra">Data da compra</label>
-                        <input id="data-compra" name="dataCompra" type="text" inputmode="numeric" maxlength="10"
-                            placeholder="dd/mm/aaaa" autocomplete="off" required>
+                        <input id="data-compra" name="dataCompra" type="date" required>
                     </div>
 
                     <div class="campo">
@@ -124,14 +123,16 @@
 
                     <div class="campo">
                         <label for="primeiro-vencimento" id="rotulo-primeiro-vencimento">Primeiro vencimento</label>
-                        <input id="primeiro-vencimento" name="primeiroVencimento" type="text" inputmode="numeric"
-                            maxlength="10" placeholder="dd/mm/aaaa" autocomplete="off" required>
+                        <input id="primeiro-vencimento" name="primeiroVencimento" type="date" required>
                     </div>
 
                     <p class="mensagem-erro" id="mensagem-erro" role="alert" hidden></p>
 
                     <button class="botao-principal" type="submit">
                         Adicionar compra
+                    </button>
+                    <button class="botao-secundario campo-completo" id="cancelar-edicao" type="button" hidden>
+                        Cancelar edição
                     </button>
                 </form>
             </div>

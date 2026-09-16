@@ -37,6 +37,7 @@ const listaCompras = document.querySelector("#lista-compras");
 const estadoVazio = document.querySelector("#estado-vazio");
 const mensagemErro = document.querySelector("#mensagem-erro");
 const botaoEnviar = formulario.querySelector(".botao-principal");
+const botaoCancelarEdicao = document.querySelector("#cancelar-edicao");
 const botaoTema = document.querySelector("#botao-tema");
 const rotuloTema = document.querySelector("#rotulo-tema");
 const iconeTema = botaoTema.querySelector("span");
@@ -129,27 +130,20 @@ function formatarMoeda(valor) {
   });
 }
 
-function formatarCampoData(evento) {
-  let valor = evento.target.value
-    .replace(/\D/g, "")
-    .slice(0, 8);
-
-  if (valor.length > 4) {
-    valor = `${valor.slice(0, 2)}/${valor.slice(2, 4)}/${valor.slice(4)}`;
-  } else if (valor.length > 2) {
-    valor = `${valor.slice(0, 2)}/${valor.slice(2)}`;
-  }
-
-  evento.target.value = valor;
-}
-
 function converterTextoEmData(texto) {
-  const partes = texto.split("/");
-
-  if (partes.length !== 3) {
+  if (typeof texto !== "string") {
     return null;
   }
 
+  const formatoCampo = /^\d{4}-\d{2}-\d{2}$/.test(texto);
+  const formatoBrasileiro = /^\d{2}\/\d{2}\/\d{4}$/.test(texto);
+
+  if (!formatoCampo && !formatoBrasileiro) {
+    return null;
+  }
+
+  // O seletor usa aaaa-mm-dd; as compras salvas usam dd/mm/aaaa.
+  const partes = formatoCampo ? texto.split("-").reverse() : texto.split("/");
   const dia = Number(partes[0]);
   const mes = Number(partes[1]);
   const ano = Number(partes[2]);
@@ -161,6 +155,19 @@ function converterTextoEmData(texto) {
     data.getFullYear() === ano;
 
   return dataValida ? data : null;
+}
+
+function formatarDataParaCampo(texto) {
+  const data = converterTextoEmData(texto);
+
+  if (!data) {
+    return "";
+  }
+
+  const ano = String(data.getFullYear()).padStart(4, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const dia = String(data.getDate()).padStart(2, "0");
+  return `${ano}-${mes}-${dia}`;
 }
 
 function adicionarMeses(dataInicial, quantidadeMeses) {
@@ -562,7 +569,6 @@ campoValorTotal.addEventListener("input", atualizarPrevia);
 campoQuantidadeParcelas.addEventListener("input", atualizarPrevia);
 campoParcelasPagas.addEventListener("input", atualizarPrevia);
 
-campoDataCompra.addEventListener("input", formatarCampoData);
 campoFormaPagamento.addEventListener("change", atualizarRotuloVencimento);
 
 botaoTema.addEventListener("click", () => {
@@ -574,10 +580,7 @@ botaoTema.addEventListener("click", () => {
   salvarTema(novoTema);
 });
 
-campoPrimeiroVencimento.addEventListener("input", (evento) => {
-  formatarCampoData(evento);
-  atualizarPrevia();
-});
+campoPrimeiroVencimento.addEventListener("input", atualizarPrevia);
 
 botaoMesAnterior.addEventListener("click", () => {
   mesEmExibicao.setMonth(mesEmExibicao.getMonth() - 1);
@@ -589,12 +592,31 @@ botaoProximoMes.addEventListener("click", () => {
   atualizarResumo();
 });
 
+const redefinirFormulario = () => {
+  formulario.reset();
+  compraEmEdicaoId = null;
+  campoParcelasPagas.disabled = false;
+  botaoEnviar.textContent = "Adicionar compra";
+  botaoCancelarEdicao.hidden = true;
+  mensagemErro.hidden = true;
+  atualizarRotuloVencimento();
+  atualizarPrevia();
+};
+
+botaoCancelarEdicao.addEventListener("click", () => {
+  redefinirFormulario();
+  campoDescricao.focus();
+});
+
 const excluirCompra = (idDaCompra) => {
   compras = compras.filter((compra) => {
     return compra.id !== idDaCompra;
   });
 
   salvarCompras();
+  if (compraEmEdicaoId === idDaCompra) {
+    redefinirFormulario();
+  }
   mostrarCompras();
   atualizarResumo();
 };
@@ -662,14 +684,15 @@ const editarCompra = (compraId) => {
 
   compraEmEdicaoId = compra.id;
   campoDescricao.value = compra.descricao;
-  campoDataCompra.value = compra.dataCompra;
+  campoDataCompra.value = formatarDataParaCampo(compra.dataCompra);
   campoFormaPagamento.value = compra.formaPagamento;
   campoValorTotal.value = compra.valorTotal;
   campoQuantidadeParcelas.value = compra.quantidadeParcelas;
   campoParcelasPagas.value = compra.parcelasPagas;
   campoParcelasPagas.disabled = true;
-  campoPrimeiroVencimento.value = compra.primeiroVencimento;
+  campoPrimeiroVencimento.value = formatarDataParaCampo(compra.primeiroVencimento);
   botaoEnviar.textContent = "Salvar alterações";
+  botaoCancelarEdicao.hidden = false;
   mensagemErro.hidden = true;
 
   atualizarRotuloVencimento();
@@ -771,7 +794,7 @@ formulario.addEventListener("submit", (evento) => {
   const compra = {
     id: compraAnterior?.id || Date.now(),
     descricao,
-    dataCompra: campoDataCompra.value,
+    dataCompra: dataCompra.toLocaleDateString("pt-BR"),
     formaPagamento,
     valorTotal,
     quantidadeParcelas,
@@ -780,7 +803,7 @@ formulario.addEventListener("submit", (evento) => {
     valorParcela: valorTotal / quantidadeParcelas,
     saldoEmAberto:
       valorTotal * ((quantidadeParcelas - parcelasPagas) / quantidadeParcelas),
-    primeiroVencimento: campoPrimeiroVencimento.value,
+    primeiroVencimento: primeiroVencimento.toLocaleDateString("pt-BR"),
     ultimoVencimento: ultimoVencimento.toLocaleDateString("pt-BR"),
     parcelas: compraAnterior?.parcelas || []
   };
@@ -804,12 +827,7 @@ formulario.addEventListener("submit", (evento) => {
   mostrarCompras();
   atualizarResumo();
 
-  formulario.reset();
-  compraEmEdicaoId = null;
-  campoParcelasPagas.disabled = false;
-  botaoEnviar.textContent = "Adicionar compra";
-  atualizarRotuloVencimento();
-  atualizarPrevia();
+  redefinirFormulario();
   campoDescricao.focus();
 });
 
