@@ -1,15 +1,17 @@
-# Controle de Parcelas
+# Capíva — Controle de Parcelas
 
-Aplicação para cadastrar e acompanhar compras parceladas.
+Módulo do Capíva para cadastrar compras parceladas, consultar vencimentos e registrar pagamentos.
 
 ## Funcionalidades
 
 - cadastro de compras parceladas;
+- edição e exclusão de compras;
 - cálculo das parcelas e dos vencimentos;
 - acompanhamento do saldo em aberto;
 - identificação de parcelas pendentes, pagas e atrasadas;
 - confirmação e correção de pagamentos;
 - consulta dos valores pendentes por mês;
+- temas claro e escuro;
 - armazenamento dos dados no navegador.
 
 ## Tecnologias
