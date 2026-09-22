@@ -2,6 +2,10 @@
 
 Módulo do Capíva para cadastrar compras parceladas, consultar vencimentos e registrar pagamentos.
 
+## Demonstração
+
+[Acessar a aplicação publicada](https://jjoaomarcelo-dev.github.io/capiva-installment-tracker/)
+
 ## Funcionalidades
 
 - cadastro de compras parceladas;
