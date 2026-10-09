@@ -2,6 +2,12 @@
 
 Módulo do Capíva para cadastrar compras parceladas, consultar vencimentos e registrar pagamentos.
 
+## Sobre o projeto
+
+O Controle de Parcelas é um módulo do Capíva, projeto pessoal voltado à organização financeira. Sua proposta é reunir compras parceladas, vencimentos e pagamentos em uma interface para acompanhar os compromissos de cada mês.
+
+Este repositório corresponde ao módulo de compras parceladas. Outros recursos planejados para o Capíva, como receitas e despesas, não fazem parte desta versão.
+
 ## Demonstração
 
 [Acessar a aplicação publicada](https://jjoaomarcelo-dev.github.io/capiva-installment-tracker/)
@@ -24,6 +30,14 @@ Módulo do Capíva para cadastrar compras parceladas, consultar vencimentos e re
 - CSS3
 - JavaScript
 
+## Desenvolvimento
+
+Projeto desenvolvido com HTML, CSS e JavaScript, com apoio de ferramentas de IA em partes da implementação. Também utilizo o código para aprofundar meus estudos em manipulação do DOM e armazenamento de dados no navegador.
+
+## Armazenamento dos dados
+
+Os registros são armazenados localmente no navegador com localStorage. Não há sincronização entre dispositivos, e a limpeza dos dados do site no navegador pode remover os registros salvos.
+
 ## Como executar
 
 1. Clone ou baixe este repositório.
@@ -31,3 +45,7 @@ Módulo do Capíva para cadastrar compras parceladas, consultar vencimentos e re
 3. Abra o arquivo `index.html` no navegador.
 
 Não é necessário instalar dependências.
+
+## Status
+
+O desenvolvimento de novas funcionalidades está temporariamente pausado enquanto consolido os fundamentos de programação. A versão atual permanece publicada para demonstração e consulta do código.
