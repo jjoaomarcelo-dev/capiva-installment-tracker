@@ -32,7 +32,7 @@ Este repositório corresponde ao módulo de compras parceladas. Outros recursos 
 
 ## Desenvolvimento
 
-Projeto desenvolvido com HTML, CSS e JavaScript, com apoio de ferramentas de IA em partes da implementação. Também utilizo o código para aprofundar meus estudos em manipulação do DOM e armazenamento de dados no navegador.
+Projeto desenvolvido com HTML, CSS e JavaScript, com apoio de ferramentas de IA em partes da implementação.
 
 ## Armazenamento dos dados
 
@@ -48,4 +48,4 @@ Não é necessário instalar dependências.
 
 ## Status
 
-O desenvolvimento de novas funcionalidades está temporariamente pausado enquanto consolido os fundamentos de programação. A versão atual permanece publicada para demonstração e consulta do código.
+Versão publicada para demonstração e consulta do código. Novas funcionalidades não estão em desenvolvimento no momento.
